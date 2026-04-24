@@ -2,45 +2,136 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ARC // SYSTEM_FEED</title>
+    <title>ARC // THE_TERMINAL</title>
     <script src="https://cdn.jsdelivr.net/npm/countup.js@2.0.7/dist/countUp.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #000; color: #fff; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        
-        .terminal { 
-            border: 1px solid #00ff41; 
-            padding: 50px 80px; 
-            border-radius: 20px; 
-            background: rgba(0, 255, 65, 0.02); 
-            box-shadow: 0 0 40px rgba(0, 255, 65, 0.1); 
-            text-align: center; 
-            transition: all 0.5s ease;
+        :root {
+            --neon-green: #00ff41;
+            --gold: #FFD700;
+            --deep-bg: radial-gradient(circle at center, #0a110a 0%, #000000 100%);
         }
 
-        /* Pulsing Glow on Win */
-        .win-glow { box-shadow: 0 0 60px rgba(0, 255, 65, 0.4); border: 2px solid #00ff41; }
+        body { 
+            background: var(--deep-bg); 
+            background-image: 
+                linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #fff; 
+            font-family: 'Space Grotesk', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            overflow: hidden; 
+        }
+        
+        .terminal { 
+            position: relative;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 255, 65, 0.2); 
+            padding: 60px 100px; 
+            border-radius: 30px; 
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 255, 65, 0.05);
+            text-align: center; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-        .label { font-size: 12px; letter-spacing: 6px; color: #00ff41; text-transform: uppercase; margin-bottom: 20px; opacity: 0.7; font-weight: 300; }
+        /* High-Value Glow on Win */
+        .win-glow { 
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 0 80px rgba(0, 255, 65, 0.25); 
+            transform: scale(1.02);
+        }
+
+        .status-bar {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            color: var(--neon-green);
+            letter-spacing: 2px;
+        }
+
+        .blink {
+            width: 6px;
+            height: 6px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 65, 0.7); }
+            70% { opacity: 0.5; box-shadow: 0 0 0 10px rgba(0, 255, 65, 0); }
+            100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 65, 0); }
+        }
+
+        .label { 
+            font-size: 11px; 
+            letter-spacing: 8px; 
+            color: #888; 
+            text-transform: uppercase; 
+            margin-bottom: 20px; 
+            font-weight: 500;
+        }
         
-        #yield-number { font-size: 5rem; font-weight: 900; transition: color 0.2s ease; letter-spacing: -2px; }
-        .gold-flash { color: #FFD700 !important; text-shadow: 0 0 40px rgba(255, 215, 0, 0.8) !important; }
+        #yield-number { 
+            font-size: 5.5rem; 
+            font-weight: 700; 
+            transition: color 0.2s ease; 
+            letter-spacing: -3px; 
+            margin: 10px 0;
+        }
+
+        .gold-flash { 
+            color: var(--gold) !important; 
+            text-shadow: 0 0 50px rgba(255, 215, 0, 0.5) !important; 
+        }
         
-        .divider { height: 1px; background: linear-gradient(90deg, transparent, #00ff41, transparent); margin: 40px 0; opacity: 0.4; }
+        .divider { 
+            height: 1px; 
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); 
+            margin: 40px 0; 
+        }
         
-        #member-count { font-size: 1.8rem; color: #00ff41; font-weight: 700; letter-spacing: 1px; }
-        .member-label { font-size: 10px; color: #666; letter-spacing: 3px; margin-top: 8px; }
+        #member-count { 
+            font-size: 2rem; 
+            color: #fff; 
+            font-weight: 500; 
+            letter-spacing: 2px; 
+        }
+
+        .member-label { 
+            font-size: 11px; 
+            color: var(--neon-green); 
+            letter-spacing: 4px; 
+            margin-top: 10px;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
 
 <div class="terminal" id="main-panel">
-    <div class="label">Total System Yield</div>
+    <div class="status-bar">
+        <div class="blink"></div>
+        SYSTEM_ONLINE
+    </div>
+    
+    <div class="label">Total Capital Extracted</div>
     <div id="yield-number">$3,420,891.00</div>
     
     <div class="divider"></div>
     
     <div id="member-count">12,402</div>
-    <div class="member-label">ACTIVE ARCHITECTS</div>
+    <div class="member-label">THE BLOODLINE</div>
 </div>
 
 <script type="module">
@@ -52,7 +143,7 @@
     const yieldDisplay = document.getElementById('yield-number');
     const mainPanel = document.getElementById('main-panel');
     
-    const yieldAnim = new CountUp('yield-number', yieldVal, { decimalPlaces: 2, prefix: '$', duration: 1.5, useEasing: true });
+    const yieldAnim = new CountUp('yield-number', yieldVal, { decimalPlaces: 2, prefix: '$', duration: 1.5 });
     const memberAnim = new CountUp('member-count', memberVal, { duration: 2 });
     
     yieldAnim.start();
@@ -62,15 +153,14 @@
         let increment = 0;
         const r = Math.random();
         
-        // HIGHER YIELD LOGIC (Scale for 12k members)
-        if (r < 0.60) increment = Math.random() * 150;      // 60% chance: $0-$150
-        else if (r < 0.85) increment = Math.random() * 800;  // 25% chance: $150-$800
-        else if (r < 0.97) increment = Math.random() * 3500; // 12% chance: $800-$3500
-        else increment = 8000 + (Math.random() * 15000);    // 3% chance: WHALE WIN ($8k-$23k)
+        // Dynamic Increments for "The Bloodline"
+        if (r < 0.60) increment = Math.random() * 200;      
+        else if (r < 0.88) increment = Math.random() * 1200;  
+        else if (r < 0.98) increment = Math.random() * 4500; 
+        else increment = 12000 + (Math.random() * 25000); // Massive Whale Win
 
         yieldVal += increment;
         
-        // FLASH EFFECTS
         yieldDisplay.classList.add('gold-flash');
         mainPanel.classList.add('win-glow');
         yieldAnim.update(yieldVal);
@@ -78,26 +168,22 @@
         setTimeout(() => {
             yieldDisplay.classList.remove('gold-flash');
             mainPanel.classList.remove('win-glow');
-        }, 1200);
+        }, 1500);
 
-        // MEMBER LOGIC
-        const memberRoll = Math.random();
-        if (memberRoll < 0.88) {
-            memberVal += Math.floor(Math.random() * 5) + 1; // Gain
+        // Member Logic (Slow growth for high-value bonding)
+        if (Math.random() < 0.85) {
+            memberVal += Math.floor(Math.random() * 3) + 1;
         } else {
-            memberVal -= Math.floor(Math.random() * 3) + 1; // Churn
+            memberVal -= 1;
         }
         memberAnim.update(memberVal);
 
-        // RANDOM TIMING (Fast Bursts vs Slow Gaps)
-        let nextInterval = Math.random() < 0.5 ? (Math.random() * 2000 + 500) : (Math.random() * 25000 + 5000);
+        let nextInterval = Math.random() < 0.4 ? (Math.random() * 4000 + 1000) : (Math.random() * 35000 + 5000);
         setTimeout(triggerUpdate, nextInterval);
     }
 
-    // First update after 4 seconds
-    setTimeout(triggerUpdate, 4000);
+    setTimeout(triggerUpdate, 5000);
 </script>
 
 </body>
 </html>
-
