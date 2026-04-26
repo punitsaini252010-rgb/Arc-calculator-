@@ -8,7 +8,7 @@
     <style>
         :root {
             --br-green: #004225; /* Pure British Racing Green */
-            --royal-gold: #d4af37; 
+            --royal-gold: #d4af37; /* Pure Gold */
             --pure-black: #000000;
         }
 
@@ -17,7 +17,7 @@
             background-image: 
                 linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
-            background-size: 100px 100px; /* Wider, more elegant silk grid */
+            background-size: 100px 100px; /* Elegant silk grid */
             color: var(--royal-gold); 
             font-family: 'Space Grotesk', sans-serif; 
             display: flex; 
@@ -29,16 +29,16 @@
             overflow: hidden; 
         }
 
-        /* Fixed at the absolute top */
+        /* Fixed at the absolute top, Pure Gold */
         .arc-header {
             position: absolute;
             top: 40px;
             font-family: 'Playfair Display', serif;
             font-size: 5rem;
             font-weight: 900;
-            color: var(--pure-black);
+            color: var(--royal-gold); 
             letter-spacing: 25px;
-            text-shadow: 0 4px 15px rgba(212, 175, 55, 0.15); /* Subtle gold emboss */
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); /* Deep black shadow for 3D gold effect */
             z-index: 0;
         }
         
@@ -52,7 +52,7 @@
             text-align: center; 
             z-index: 1;
             transition: background 1.5s ease-in-out, box-shadow 1.5s ease-in-out;
-            margin-top: 50px; /* Compensate for the absolute header */
+            margin-top: 50px; 
         }
 
         /* Smooth Royal Fade */
@@ -134,7 +134,7 @@
     // --- STRICT $5M/MONTH BOUNDARY MATH ---
     const START_DATE = new Date('April 26, 2026 00:00:00').getTime();
     const BASE_REVENUE = 1745283.00; 
-    const REVENUE_PER_HOUR = 6944.44; // Exactly $5,000,000 per 30 days
+    const REVENUE_PER_HOUR = 6944.44; // Exactly $5,000,000 per 30 days maximum
     const BASE_MEMBERS = 12402;
     const MEMBERS_PER_DAY = 12; // Exclusive, slow growth
 
@@ -153,7 +153,7 @@
     let currentYield = stats.revenue;
     let currentMembers = stats.members;
 
-    // The 'startVal' parameter ensures it DOES NOT restart from zero when loaded
+    // StartVal ensures it loads instantly at the current number, no starting from zero
     const yieldAnim = new CountUp('yield-number', currentYield, { 
         startVal: currentYield, 
         decimalPlaces: 2, 
@@ -177,11 +177,11 @@
         const r = Math.random();
         let increment = 0;
 
-        // Controlled Injections to respect the math
+        // Controlled Injections
         if (r < 0.40) increment = [10, 50, 100, 300, 500, 1000][Math.floor(Math.random() * 6)]; 
         else if (r < 0.75) increment = [63, 82, 114, 527, 892][Math.floor(Math.random() * 5)]; 
         else if (r < 0.95) increment = 1500 + (Math.random() * 3000); 
-        else increment = 5000 + (Math.random() * 9357); // Max Whale constrained
+        else increment = 5000 + (Math.random() * 9357); 
 
         currentYield += increment;
 
@@ -193,7 +193,7 @@
             mainPanel.classList.remove('gold-blink');
         }, 1500);
 
-        // DELIBERATE TIMING: Extremely slow. 15 seconds to 2.5 minutes between updates.
+        // DELIBERATE TIMING: 15 seconds to 2.5 minutes
         let nextInterval = Math.floor(Math.random() * 135000) + 15000;
         setTimeout(triggerInjection, nextInterval);
     }
@@ -213,3 +213,4 @@
 
 </body>
 </html>
+
