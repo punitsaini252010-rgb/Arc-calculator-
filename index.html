@@ -7,18 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --br-green: #004225; /* British Racing Green */
+            --br-green: #004225; 
             --royal-gold: #d4af37; 
             --pure-black: #000000;
         }
 
         body { 
             background: radial-gradient(circle at center, var(--br-green) 0%, #001a0f 70%, #000000 100%); 
-            /* Subtle Silk Grid */
             background-image: 
                 linear-gradient(rgba(212, 175, 55, 0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(212, 175, 55, 0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
+            background-size: 80px 80px;
             color: var(--royal-gold); 
             font-family: 'Space Grotesk', sans-serif; 
             display: flex; 
@@ -35,46 +34,44 @@
             font-size: 9rem;
             font-weight: 900;
             color: var(--pure-black);
-            letter-spacing: 25px;
-            margin-bottom: -45px;
+            letter-spacing: 30px;
+            margin-bottom: -50px;
             z-index: 0;
             opacity: 0.8;
-            filter: drop-shadow(0 0 10px rgba(0, 66, 37, 0.5));
         }
         
         .terminal { 
             position: relative;
             background: var(--pure-black);
             border: 1px solid var(--royal-gold); 
-            padding: 80px 130px; 
-            border-radius: 5px; /* Razor Sharp Royal Edges */
-            box-shadow: 0 60px 120px rgba(0, 0, 0, 0.9);
+            padding: 80px 140px; 
+            border-radius: 2px; 
+            box-shadow: 0 60px 150px rgba(0, 0, 0, 0.9);
             text-align: center; 
             z-index: 1;
-            transition: all 0.4s ease;
+            transition: background 0.8s ease, transform 0.5s ease;
         }
 
-        /* The Gold Strike Blink */
         .gold-blink { 
             background: var(--royal-gold) !important;
-            box-shadow: 0 0 100px var(--royal-gold);
+            box-shadow: 0 0 120px var(--royal-gold);
+            transform: scale(1.02);
         }
         .gold-blink * { color: var(--pure-black) !important; }
 
         .label { 
             font-family: 'Playfair Display', serif;
             font-size: 13px; 
-            letter-spacing: 6px; 
+            letter-spacing: 8px; 
             color: var(--royal-gold); 
             text-transform: uppercase; 
             margin-bottom: 25px; 
             font-weight: 700;
-            opacity: 0.8;
         }
         
         #yield-number { 
             font-family: 'Playfair Display', serif;
-            font-size: 6.8rem; 
+            font-size: 7rem; 
             font-weight: 900; 
             letter-spacing: -3px; 
             margin: 15px 0;
@@ -84,8 +81,8 @@
         .divider { 
             height: 1px; 
             background: linear-gradient(90deg, transparent, var(--royal-gold), transparent); 
-            margin: 50px 0; 
-            opacity: 0.4;
+            margin: 60px 0; 
+            opacity: 0.3;
         }
         
         #member-count { 
@@ -99,10 +96,10 @@
             font-family: 'Playfair Display', serif;
             font-size: 11px; 
             color: var(--royal-gold); 
-            letter-spacing: 5px; 
+            letter-spacing: 6px; 
             margin-top: 15px;
             font-weight: 700;
-            opacity: 0.7;
+            opacity: 0.6;
         }
     </style>
 </head>
@@ -123,21 +120,21 @@
 <script type="module">
     import { CountUp } from 'https://cdn.jsdelivr.net/npm/countup.js@2.0.7/dist/countUp.min.js';
 
-    // --- TIME-LOCKED PERSISTENT MATH ---
+    // --- STEADY PERSISTENT LOGIC ---
     const START_DATE = new Date('April 1, 2026 00:00:00').getTime();
-    const BASE_REVENUE = 2150890.00; 
-    const REVENUE_PER_SECOND = 4.82; // Targets ~$13M monthly growth
+    const BASE_REVENUE = 2150890.00;
+    const REVENUE_PER_HOUR = 17500; // Targets the $13M monthly goal but in chunks
     const BASE_MEMBERS = 12402;
-    const MEMBERS_PER_HOUR = 0.6; // Ultra-slow exclusive growth
+    const MEMBERS_PER_DAY = 18; // Very exclusive, slow growth
 
     function getLiveStats() {
         const now = Date.now();
-        const elapsedSeconds = (now - START_DATE) / 1000;
-        const elapsedHours = elapsedSeconds / 3600;
+        const elapsedHours = (now - START_DATE) / 3600000;
+        const elapsedDays = elapsedHours / 24;
 
         return {
-            revenue: BASE_REVENUE + (elapsedSeconds * REVENUE_PER_SECOND),
-            members: Math.floor(BASE_MEMBERS + (elapsedHours * MEMBERS_PER_HOUR))
+            revenue: BASE_REVENUE + (elapsedHours * REVENUE_PER_HOUR),
+            members: Math.floor(BASE_MEMBERS + (elapsedDays * MEMBERS_PER_DAY))
         };
     }
 
@@ -145,8 +142,9 @@
     let currentYield = stats.revenue;
     let currentMembers = stats.members;
 
-    const yieldAnim = new CountUp('yield-number', currentYield, { decimalPlaces: 2, prefix: '$', duration: 3, useEasing: true });
-    const memberAnim = new CountUp('member-count', currentMembers, { duration: 5, useEasing: true });
+    // Longer animation durations for "Heavy" feeling
+    const yieldAnim = new CountUp('yield-number', currentYield, { decimalPlaces: 2, prefix: '$', duration: 5 });
+    const memberAnim = new CountUp('member-count', currentMembers, { duration: 6 });
     
     yieldAnim.start();
     memberAnim.start();
@@ -157,43 +155,38 @@
         const r = Math.random();
         let increment = 0;
 
-        // Royal Injection Distribution
-        if (r < 0.20) increment = [1, 10, 50, 100, 300, 500, 1000, 10000][Math.floor(Math.random() * 8)]; 
-        else if (r < 0.85) increment = Math.random() * 450; 
-        else if (r < 0.98) increment = 2000 + (Math.random() * 8000); 
-        else increment = 25000 + (Math.random() * 75000); // Sovereign Strike
+        // FIXED CHUNKS (Feels more real for high-ticket)
+        if (r < 0.30) increment = [50, 100, 500, 1000][Math.floor(Math.random() * 4)];
+        else if (r < 0.70) increment = 10 + (Math.random() * 80);
+        else if (r < 0.95) increment = 2500 + (Math.random() * 5000); // High ticket audit
+        else increment = 15000 + (Math.random() * 45000); // Institutional win
 
         currentYield += increment;
 
-        // The Gold Strike Blink
+        // ROYAL FLASH
         mainPanel.classList.add('gold-blink');
         yieldAnim.update(currentYield);
         
         setTimeout(() => {
             mainPanel.classList.remove('gold-blink');
-        }, 1000);
+        }, 1200);
 
-        // Truly Random Heartbeat (5s to 90s)
-        let nextInterval = Math.floor(Math.random() * 85000) + 5000;
+        // DELIBERATE TIMING: 20 seconds to 4 minutes between updates
+        let nextInterval = Math.floor(Math.random() * 220000) + 20000;
         setTimeout(triggerInjection, nextInterval);
     }
 
-    // Persist the crawl every 100ms
-    setInterval(() => {
-        currentYield += (REVENUE_PER_SECOND / 10);
-        yieldAnim.update(currentYield);
-    }, 100);
-
-    // Member sync every 5 minutes
+    // Sync Members every 30 minutes
     setInterval(() => {
         const freshStats = getLiveStats();
         if (freshStats.members > currentMembers) {
             currentMembers = freshStats.members;
             memberAnim.update(currentMembers);
         }
-    }, 300000);
+    }, 1800000);
 
-    setTimeout(triggerInjection, 8000);
+    // First win happens after a long wait (15 seconds) to set the pace
+    setTimeout(triggerInjection, 15000);
 </script>
 
 </body>
