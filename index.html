@@ -15,9 +15,9 @@
         body { 
             background: var(--deep-bg); 
             background-image: 
-                linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
+                linear-gradient(rgba(0, 255, 65, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
             color: #fff; 
             font-family: 'Space Grotesk', sans-serif; 
             display: flex; 
@@ -30,160 +30,126 @@
         
         .terminal { 
             position: relative;
-            backdrop-filter: blur(10px);
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(0, 255, 65, 0.2); 
-            padding: 60px 100px; 
-            border-radius: 30px; 
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 255, 65, 0.05);
+            backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 255, 65, 0.15); 
+            padding: 70px 110px; 
+            border-radius: 40px; 
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
             text-align: center; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* High-Value Glow on Win */
         .win-glow { 
-            border: 1px solid var(--neon-green);
-            box-shadow: 0 0 80px rgba(0, 255, 65, 0.25); 
-            transform: scale(1.02);
+            border: 1px solid rgba(0, 255, 65, 0.5);
+            box-shadow: 0 0 60px rgba(0, 255, 65, 0.15); 
         }
 
         .status-bar {
             position: absolute;
-            top: 20px;
-            right: 30px;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 10px;
+            gap: 10px;
+            font-size: 9px;
             color: var(--neon-green);
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            opacity: 0.6;
         }
 
-        .blink {
-            width: 6px;
-            height: 6px;
-            background: var(--neon-green);
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
+        .blink { width: 5px; height: 5px; background: var(--neon-green); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-        @keyframes pulse {
-            0% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 65, 0.7); }
-            70% { opacity: 0.5; box-shadow: 0 0 0 10px rgba(0, 255, 65, 0); }
-            100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 65, 0); }
-        }
-
-        .label { 
-            font-size: 11px; 
-            letter-spacing: 8px; 
-            color: #888; 
-            text-transform: uppercase; 
-            margin-bottom: 20px; 
-            font-weight: 500;
-        }
-        
-        #yield-number { 
-            font-size: 5.5rem; 
-            font-weight: 700; 
-            transition: color 0.2s ease; 
-            letter-spacing: -3px; 
-            margin: 10px 0;
-        }
-
-        .gold-flash { 
-            color: var(--gold) !important; 
-            text-shadow: 0 0 50px rgba(255, 215, 0, 0.5) !important; 
-        }
-        
-        .divider { 
-            height: 1px; 
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); 
-            margin: 40px 0; 
-        }
-        
-        #member-count { 
-            font-size: 2rem; 
-            color: #fff; 
-            font-weight: 500; 
-            letter-spacing: 2px; 
-        }
-
-        .member-label { 
-            font-size: 11px; 
-            color: var(--neon-green); 
-            letter-spacing: 4px; 
-            margin-top: 10px;
-            opacity: 0.8;
-        }
+        .label { font-size: 10px; letter-spacing: 10px; color: #555; text-transform: uppercase; margin-bottom: 25px; font-weight: 700; }
+        #yield-number { font-size: 6rem; font-weight: 700; letter-spacing: -4px; margin: 15px 0; color: #fff; }
+        .gold-flash { color: var(--gold) !important; text-shadow: 0 0 40px rgba(255, 215, 0, 0.4) !important; }
+        .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.2), transparent); margin: 45px 0; }
+        #member-count { font-size: 2.2rem; color: #eee; font-weight: 500; letter-spacing: 1px; }
+        .member-label { font-size: 10px; color: var(--neon-green); letter-spacing: 5px; margin-top: 12px; opacity: 0.5; font-weight: 700; }
     </style>
 </head>
 <body>
 
 <div class="terminal" id="main-panel">
-    <div class="status-bar">
-        <div class="blink"></div>
-        SYSTEM_ONLINE
-    </div>
-    
+    <div class="status-bar"><div class="blink"></div>SECURE_CONNECTION_ESTABLISHED</div>
     <div class="label">Total Capital Extracted</div>
-    <div id="yield-number">$3,420,891.00</div>
-    
+    <div id="yield-number">$0.00</div>
     <div class="divider"></div>
-    
-    <div id="member-count">12,402</div>
+    <div id="member-count">0</div>
     <div class="member-label">THE BLOODLINE</div>
 </div>
 
 <script type="module">
     import { CountUp } from 'https://cdn.jsdelivr.net/npm/countup.js@2.0.7/dist/countUp.min.js';
 
-    let yieldVal = 3420891.00;
-    let memberVal = 12402;
+    // --- ARCHITECT CONFIGURATION ---
+    const START_DATE = new Date('April 1, 2026 00:00:00').getTime();
+    const BASE_REVENUE = 3420891.00;
+    const REVENUE_PER_SECOND = 4.63; // ~$12M per month growth
+    const BASE_MEMBERS = 12402;
+    const MEMBERS_PER_HOUR = 1.4; // Realistic slow growth
+
+    function getLiveStats() {
+        const now = Date.now();
+        const elapsedSeconds = (now - START_DATE) / 1000;
+        const elapsedHours = elapsedSeconds / 3600;
+
+        return {
+            revenue: BASE_REVENUE + (elapsedSeconds * REVENUE_PER_SECOND),
+            members: Math.floor(BASE_MEMBERS + (elapsedHours * MEMBERS_PER_HOUR))
+        };
+    }
+
+    const stats = getLiveStats();
+    let currentYield = stats.revenue;
+    let currentMembers = stats.members;
 
     const yieldDisplay = document.getElementById('yield-number');
     const mainPanel = document.getElementById('main-panel');
     
-    const yieldAnim = new CountUp('yield-number', yieldVal, { decimalPlaces: 2, prefix: '$', duration: 1.5 });
-    const memberAnim = new CountUp('member-count', memberVal, { duration: 2 });
+    const yieldAnim = new CountUp('yield-number', currentYield, { decimalPlaces: 2, prefix: '$', duration: 3 });
+    const memberAnim = new CountUp('member-count', currentMembers, { duration: 4 });
     
     yieldAnim.start();
     memberAnim.start();
 
-    function triggerUpdate() {
-        let increment = 0;
+    // Sudden "Injections" to keep it exciting
+    function triggerRandomBurst() {
         const r = Math.random();
-        
-        // Dynamic Increments for "The Bloodline"
-        if (r < 0.60) increment = Math.random() * 200;      
-        else if (r < 0.88) increment = Math.random() * 1200;  
-        else if (r < 0.98) increment = Math.random() * 4500; 
-        else increment = 12000 + (Math.random() * 25000); // Massive Whale Win
+        let burst = 0;
+        if (r > 0.95) burst = 5000 + (Math.random() * 15000); // Whale Win
+        else if (r > 0.80) burst = 500 + (Math.random() * 2000); // Decent Win
 
-        yieldVal += increment;
-        
-        yieldDisplay.classList.add('gold-flash');
-        mainPanel.classList.add('win-glow');
-        yieldAnim.update(yieldVal);
-        
-        setTimeout(() => {
-            yieldDisplay.classList.remove('gold-flash');
-            mainPanel.classList.remove('win-glow');
-        }, 1500);
-
-        // Member Logic (Slow growth for high-value bonding)
-        if (Math.random() < 0.85) {
-            memberVal += Math.floor(Math.random() * 3) + 1;
-        } else {
-            memberVal -= 1;
+        if (burst > 0) {
+            currentYield += burst;
+            yieldDisplay.classList.add('gold-flash');
+            mainPanel.classList.add('win-glow');
+            yieldAnim.update(currentYield);
+            setTimeout(() => {
+                yieldDisplay.classList.remove('gold-flash');
+                mainPanel.classList.remove('win-glow');
+            }, 2000);
         }
-        memberAnim.update(memberVal);
-
-        let nextInterval = Math.random() < 0.4 ? (Math.random() * 4000 + 1000) : (Math.random() * 35000 + 5000);
-        setTimeout(triggerUpdate, nextInterval);
+        setTimeout(triggerRandomBurst, Math.random() * 60000 + 10000);
     }
 
-    setTimeout(triggerUpdate, 5000);
-</script>
+    // Smooth second-by-second crawl
+    setInterval(() => {
+        currentYield += (REVENUE_PER_SECOND / 10);
+        yieldAnim.update(currentYield);
+    }, 100);
 
+    // Member check every minute
+    setInterval(() => {
+        const freshStats = getLiveStats();
+        if (freshStats.members > currentMembers) {
+            currentMembers = freshStats.members;
+            memberAnim.update(currentMembers);
+        }
+    }, 60000);
+
+    setTimeout(triggerRandomBurst, 10000);
+</script>
 </body>
 </html>
