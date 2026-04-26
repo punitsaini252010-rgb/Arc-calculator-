@@ -7,13 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --br-green: #004225; 
+            --br-green: #004225; /* British Racing Green */
             --royal-gold: #d4af37; 
             --pure-black: #000000;
         }
 
         body { 
-            background: radial-gradient(circle at center, var(--br-green) 0%, #001a0f 70%, #000000 100%); 
+            background: radial-gradient(circle at center, var(--br-green) 0%, #00120a 70%, #000000 100%); 
             background-image: 
                 linear-gradient(rgba(212, 175, 55, 0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(212, 175, 55, 0.02) 1px, transparent 1px);
@@ -38,26 +38,32 @@
             margin-bottom: -50px;
             z-index: 0;
             opacity: 0.8;
+            text-shadow: 0 0 40px rgba(0, 66, 37, 0.5); /* Subtle green shadow behind text */
         }
         
         .terminal { 
             position: relative;
             background: var(--pure-black);
-            border: 1px solid var(--royal-gold); 
+            border: 1px solid rgba(212, 175, 55, 0.3); 
             padding: 80px 140px; 
-            border-radius: 2px; 
+            border-radius: 4px; 
             box-shadow: 0 60px 150px rgba(0, 0, 0, 0.9);
             text-align: center; 
             z-index: 1;
-            transition: background 0.8s ease, transform 0.5s ease;
+            /* Ultra-smooth transition for the fade, removing the jarring vibration */
+            transition: background 1.5s ease-in-out, box-shadow 1.5s ease-in-out;
         }
 
+        /* Smooth Royal Fade (No scaling/vibration) */
         .gold-blink { 
             background: var(--royal-gold) !important;
-            box-shadow: 0 0 120px var(--royal-gold);
-            transform: scale(1.02);
+            box-shadow: 0 0 100px rgba(212, 175, 55, 0.4);
+            border-color: var(--royal-gold);
         }
-        .gold-blink * { color: var(--pure-black) !important; }
+        .gold-blink * { 
+            color: var(--pure-black) !important; 
+            transition: color 1.5s ease-in-out;
+        }
 
         .label { 
             font-family: 'Playfair Display', serif;
@@ -67,6 +73,7 @@
             text-transform: uppercase; 
             margin-bottom: 25px; 
             font-weight: 700;
+            transition: color 1.5s ease-in-out;
         }
         
         #yield-number { 
@@ -76,6 +83,7 @@
             letter-spacing: -3px; 
             margin: 15px 0;
             color: var(--royal-gold);
+            transition: color 1.5s ease-in-out;
         }
         
         .divider { 
@@ -90,6 +98,7 @@
             font-size: 2.8rem; 
             color: var(--royal-gold); 
             font-weight: 700; 
+            transition: color 1.5s ease-in-out;
         }
 
         .member-label { 
@@ -100,6 +109,7 @@
             margin-top: 15px;
             font-weight: 700;
             opacity: 0.6;
+            transition: color 1.5s ease-in-out;
         }
     </style>
 </head>
@@ -120,16 +130,17 @@
 <script type="module">
     import { CountUp } from 'https://cdn.jsdelivr.net/npm/countup.js@2.0.7/dist/countUp.min.js';
 
-    // --- STEADY PERSISTENT LOGIC ---
-    const START_DATE = new Date('April 1, 2026 00:00:00').getTime();
-    const BASE_REVENUE = 2150890.00;
-    const REVENUE_PER_HOUR = 17500; // Targets the $13M monthly goal but in chunks
+    // --- TIME-LOCKED PERSISTENT MATH ---
+    // Anchored to late April to ensure the base number aligns closely with your target today
+    const START_DATE = new Date('April 26, 2026 00:00:00').getTime();
+    const BASE_REVENUE = 1745283.00; 
+    const REVENUE_PER_HOUR = 14500; // Calibrated for the ~9M/month goal
     const BASE_MEMBERS = 12402;
-    const MEMBERS_PER_DAY = 18; // Very exclusive, slow growth
+    const MEMBERS_PER_DAY = 14; 
 
     function getLiveStats() {
         const now = Date.now();
-        const elapsedHours = (now - START_DATE) / 3600000;
+        const elapsedHours = Math.max(0, (now - START_DATE) / 3600000);
         const elapsedDays = elapsedHours / 24;
 
         return {
@@ -142,9 +153,9 @@
     let currentYield = stats.revenue;
     let currentMembers = stats.members;
 
-    // Longer animation durations for "Heavy" feeling
-    const yieldAnim = new CountUp('yield-number', currentYield, { decimalPlaces: 2, prefix: '$', duration: 5 });
-    const memberAnim = new CountUp('member-count', currentMembers, { duration: 6 });
+    // Slow, deliberate numbering rolling
+    const yieldAnim = new CountUp('yield-number', currentYield, { decimalPlaces: 2, prefix: '$', duration: 4.5, useEasing: true });
+    const memberAnim = new CountUp('member-count', currentMembers, { duration: 6, useEasing: true });
     
     yieldAnim.start();
     memberAnim.start();
@@ -155,28 +166,29 @@
         const r = Math.random();
         let increment = 0;
 
-        // FIXED CHUNKS (Feels more real for high-ticket)
-        if (r < 0.30) increment = [50, 100, 500, 1000][Math.floor(Math.random() * 4)];
-        else if (r < 0.70) increment = 10 + (Math.random() * 80);
-        else if (r < 0.95) increment = 2500 + (Math.random() * 5000); // High ticket audit
-        else increment = 15000 + (Math.random() * 45000); // Institutional win
+        // FIXED CHUNKS vs RANDOM CHUNKS
+        if (r < 0.35) increment = [1, 10, 50, 100, 300, 500, 1000, 10000][Math.floor(Math.random() * 8)]; 
+        else if (r < 0.75) increment = 25 + (Math.random() * 150); // Small natural randoms
+        else if (r < 0.96) increment = 1500 + (Math.random() * 4500); // Rare audits
+        else increment = 12000 + (Math.random() * 30000); // Massive Whale Wire
 
         currentYield += increment;
 
-        // ROYAL FLASH
+        // THE SMOOTH ROYAL FADE
         mainPanel.classList.add('gold-blink');
         yieldAnim.update(currentYield);
         
+        // Let the gold stay for a solid 1.5 seconds, then fade out smoothly
         setTimeout(() => {
             mainPanel.classList.remove('gold-blink');
-        }, 1200);
+        }, 1500);
 
-        // DELIBERATE TIMING: 20 seconds to 4 minutes between updates
-        let nextInterval = Math.floor(Math.random() * 220000) + 20000;
+        // DELIBERATE TIMING: Extremely slow. 20 seconds to 3 minutes between updates.
+        let nextInterval = Math.floor(Math.random() * 160000) + 20000;
         setTimeout(triggerInjection, nextInterval);
     }
 
-    // Sync Members every 30 minutes
+    // Member Sync 
     setInterval(() => {
         const freshStats = getLiveStats();
         if (freshStats.members > currentMembers) {
@@ -185,8 +197,8 @@
         }
     }, 1800000);
 
-    // First win happens after a long wait (15 seconds) to set the pace
-    setTimeout(triggerInjection, 15000);
+    // Initial delay so the page loads quietly before the first strike hits
+    setTimeout(triggerInjection, 12000);
 </script>
 
 </body>
