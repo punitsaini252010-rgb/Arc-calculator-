@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -29,16 +29,28 @@
             overflow: hidden; 
         }
 
-        /* Fixed at the absolute top, Pure Gold */
+        /* Fixed at the absolute top, Massive 3D Pure Gold */
         .arc-header {
             position: absolute;
-            top: 40px;
+            top: 25px; 
             font-family: 'Playfair Display', serif;
-            font-size: 5rem;
+            font-size: 7.5rem; 
             font-weight: 900;
             color: var(--royal-gold); 
-            letter-spacing: 25px;
-            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); /* Deep black shadow for 3D gold effect */
+            letter-spacing: 30px; 
+            
+            /* The 3D Extrusion Effect: Stacking darker shades of gold downwards */
+            text-shadow: 
+                0 1px 0 #c4a132, 
+                0 2px 0 #b5942e, 
+                0 3px 0 #a6882a, 
+                0 4px 0 #967a26, 
+                0 5px 0 #876e22, 
+                0 6px 0 #78621e, 
+                0 7px 0 #68551a, 
+                0 8px 0 #594816,
+                0 15px 25px rgba(0, 0, 0, 0.9), /* Heavy drop shadow directly below */
+                0 30px 60px rgba(0, 0, 0, 0.95); /* Deep ambient shadow for the floating effect */
             z-index: 0;
         }
         
@@ -52,7 +64,7 @@
             text-align: center; 
             z-index: 1;
             transition: background 1.5s ease-in-out, box-shadow 1.5s ease-in-out;
-            margin-top: 50px; 
+            margin-top: 140px; /* Lowered slightly so the massive 3D text doesn't overlap it */
         }
 
         /* Smooth Royal Fade */
@@ -213,4 +225,3 @@
 
 </body>
 </html>
-
