@@ -1,146 +1,4 @@
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>ARC // THE_ROYAL_COURT</title>
-    <script src="https://cdn.jsdelivr.net/npm/countup.js@2.0.7/dist/countUp.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --br-green: #004225; /* Pure British Racing Green */
-            --royal-gold: #d4af37; /* Pure Gold */
-            --pure-black: #000000;
-        }
-
-        body { 
-            background-color: var(--br-green); 
-            background-image: 
-                linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
-            background-size: 100px 100px; /* Elegant silk grid */
-            color: var(--royal-gold); 
-            font-family: 'Space Grotesk', sans-serif; 
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-            overflow: hidden; 
-        }
-
-        /* Fixed at the absolute top, Massive 3D Pure Gold */
-        .arc-header {
-            position: absolute;
-            top: 25px; 
-            font-family: 'Playfair Display', serif;
-            font-size: 7.5rem; 
-            font-weight: 900;
-            color: var(--royal-gold); 
-            letter-spacing: 30px; 
-            
-            /* The 3D Extrusion Effect: Stacking darker shades of gold downwards */
-            text-shadow: 
-                0 1px 0 #c4a132, 
-                0 2px 0 #b5942e, 
-                0 3px 0 #a6882a, 
-                0 4px 0 #967a26, 
-                0 5px 0 #876e22, 
-                0 6px 0 #78621e, 
-                0 7px 0 #68551a, 
-                0 8px 0 #594816,
-                0 15px 25px rgba(0, 0, 0, 0.9), /* Heavy drop shadow directly below */
-                0 30px 60px rgba(0, 0, 0, 0.95); /* Deep ambient shadow for the floating effect */
-            z-index: 0;
-        }
-        
-        .terminal { 
-            position: relative;
-            background: var(--pure-black);
-            border: 1px solid rgba(212, 175, 55, 0.4); 
-            padding: 90px 150px; 
-            border-radius: 2px; 
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.95);
-            text-align: center; 
-            z-index: 1;
-            transition: background 1.5s ease-in-out, box-shadow 1.5s ease-in-out;
-            margin-top: 140px; /* Lowered slightly so the massive 3D text doesn't overlap it */
-        }
-
-        /* Smooth Royal Fade */
-        .gold-blink { 
-            background: var(--royal-gold) !important;
-            box-shadow: 0 0 150px rgba(212, 175, 55, 0.5);
-            border-color: var(--royal-gold);
-        }
-        .gold-blink * { 
-            color: var(--pure-black) !important; 
-            transition: color 1.5s ease-in-out;
-        }
-
-        .label { 
-            font-family: 'Playfair Display', serif;
-            font-size: 14px; 
-            letter-spacing: 8px; 
-            color: var(--royal-gold); 
-            text-transform: uppercase; 
-            margin-bottom: 30px; 
-            font-weight: 700;
-            transition: color 1.5s ease-in-out;
-        }
-        
-        #yield-number { 
-            font-family: 'Playfair Display', serif;
-            font-size: 7.5rem; 
-            font-weight: 900; 
-            letter-spacing: -3px; 
-            margin: 20px 0;
-            color: var(--royal-gold);
-            transition: color 1.5s ease-in-out;
-        }
-        
-        .divider { 
-            height: 1px; 
-            background: linear-gradient(90deg, transparent, var(--royal-gold), transparent); 
-            margin: 60px 0; 
-            opacity: 0.3;
-        }
-        
-        #member-count { 
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem; 
-            color: var(--royal-gold); 
-            font-weight: 700; 
-            transition: color 1.5s ease-in-out;
-        }
-
-        .member-label { 
-            font-family: 'Playfair Display', serif;
-            font-size: 12px; 
-            color: var(--royal-gold); 
-            letter-spacing: 6px; 
-            margin-top: 15px;
-            font-weight: 700;
-            opacity: 0.7;
-            transition: color 1.5s ease-in-out;
-        }
-    </style>
-</head>
-<body>
-
-<div class="arc-header">ARC</div>
-
-<div class="terminal" id="main-panel">
-    <div class="label">Total Earnings in ARC</div>
-    <div id="yield-number">$1,745,283.00</div>
-    
-    <div class="divider"></div>
-    
-    <div id="member-count">12,402</div>
-    <div class="member-label">Total Blood Brothers in Bloodline</div>
-</div>
-
-<script type="module">
+    <script type="module">
     import { CountUp } from 'https://cdn.jsdelivr.net/npm/countup.js@2.0.7/dist/countUp.min.js';
 
     // --- STRICT $5M/MONTH BOUNDARY MATH ---
@@ -165,7 +23,6 @@
     let currentYield = stats.revenue;
     let currentMembers = stats.members;
 
-    // StartVal ensures it loads instantly at the current number, no starting from zero
     const yieldAnim = new CountUp('yield-number', currentYield, { 
         startVal: currentYield, 
         decimalPlaces: 2, 
@@ -186,16 +43,11 @@
     const mainPanel = document.getElementById('main-panel');
 
     function triggerInjection() {
-        const r = Math.random();
-        let increment = 0;
-
-        // Controlled Injections
-        if (r < 0.40) increment = [10, 50, 100, 300, 500, 1000][Math.floor(Math.random() * 6)]; 
-        else if (r < 0.75) increment = [63, 82, 114, 527, 892][Math.floor(Math.random() * 5)]; 
-        else if (r < 0.95) increment = 1500 + (Math.random() * 3000); 
-        else increment = 5000 + (Math.random() * 9357); 
-
-        currentYield += increment;
+        // FETCH THE ABSOLUTE TRUTH: Pull the exact math for this specific millisecond
+        const freshStats = getLiveStats();
+        
+        // Update the visual number to match the strict timeline math
+        currentYield = freshStats.revenue;
 
         // THE SMOOTH ROYAL FADE
         mainPanel.classList.add('gold-blink');
@@ -205,23 +57,30 @@
             mainPanel.classList.remove('gold-blink');
         }, 1500);
 
-        // DELIBERATE TIMING: 15 seconds to 2.5 minutes
-        let nextInterval = Math.floor(Math.random() * 135000) + 15000;
+        // RANDOMIZED TIMING FOR NATURAL JUMPS
+        // Because the revenue grows strictly by $1.92 per second ($6944/hr)...
+        // A 10-second wait creates a $19 jump. A 60-second wait creates a $115 jump.
+        // It's naturally random, but perfectly tied to the $5M boundary.
+        let nextInterval = Math.floor(Math.random() * 85000) + 10000; // Waits between 10s and 95s
+        
+        // Occasionally, make it wait 3 to 5 minutes to build up a bigger "Whale" jump ($400-$600)
+        if (Math.random() > 0.90) {
+            nextInterval = Math.floor(Math.random() * 180000) + 120000;
+        }
+
         setTimeout(triggerInjection, nextInterval);
     }
 
-    // Member Sync (Checks exactly against elapsed time without spinning from 0)
+    // Member Sync 
     setInterval(() => {
         const freshStats = getLiveStats();
         if (freshStats.members > currentMembers) {
             currentMembers = freshStats.members;
             memberAnim.update(currentMembers);
         }
-    }, 1800000); // Syncs every 30 mins
+    }, 1800000); 
 
-    // First visual strike happens quietly after 10 seconds
-    setTimeout(triggerInjection, 10000);
-</script>
-
-</body>
-</html>
+    // First visual strike happens quietly after 5 seconds
+    setTimeout(triggerInjection, 5000);
+    </script>
+    
